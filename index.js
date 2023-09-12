@@ -1,5 +1,8 @@
+const { createServer } = require("http");
 const { Server } = require("socket.io");
-const io = new Server(8090, {
+
+const httpServer = createServer();
+const io = new Server(httpServer, {
   cors: {
     origin: "http://localhost:3000",
   },
@@ -43,4 +46,8 @@ io.on("connection", (socket) => {
     removeUser(socket.id);
     io.emit("getUser", users);
   });
+});
+
+httpServer.listen(8090, () => {
+  console.log("listening on port 8090");
 });
